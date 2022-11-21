@@ -836,7 +836,7 @@ Da tabsfunktionenkun afhænger af to variable, kan vi tegne grafen for den. Et e
 herpå ses i @fig-tabsfunktion.
 
 ![Grafen for en tabsfunktion som afhænger af vægtene $w_0$ og
-$w_1$.](images/tabsfunktion.PNG){#fig-tabsfunktion}
+$w_1$.](images/tabsfunktion.png){#fig-tabsfunktion}
 
 Idéen er nu, at vi gerne vil bestemme vægtene $w_0$ og $w_1$, sådan at
 tabsfunktionen minimeres. Tænk lidt over det. Det giver god mening, at
