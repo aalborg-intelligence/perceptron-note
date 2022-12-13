@@ -24,6 +24,7 @@ jobs:
 
       - name: Install R Dependencies
         run: |
+          install.packages("remotes")
           remotes::install_cran("plotly")
           remotes::install_cran("tidyverse")
           remotes::install_github("aalborg-intelligence/aai")
