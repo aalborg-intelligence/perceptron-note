@@ -24,9 +24,14 @@ jobs:
 
       - name: Install R Dependencies
         run: |
-          install.packages("remotes")
-          remotes::install_cran("plotly")
-          remotes::install_cran("tidyverse")
+          options(repos = "https://packagemanager.rstudio.com/cran")
+          options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version["platform"], R.version["arch"], R.version["os"])))
+          install.packages("remotes", dependencies = TRUE)
+          install.packages("plotly", dependencies = TRUE)
+          install.packages("tidyverse", dependencies = TRUE)
+          install.packages("shiny", dependencies = TRUE)
+          install.packages("spaa", dependencies = TRUE)
+          install.packages("class", dependencies = TRUE)
           remotes::install_github("aalborg-intelligence/aai")
         shell: Rscript {0}
 
