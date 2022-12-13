@@ -27,6 +27,7 @@ jobs:
           remotes::install_cran("plotly")
           remotes::install_cran("tidyverse")
           remotes::install_github("aalborg-intelligence/aai")
+        shell: Rscript {0}
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
