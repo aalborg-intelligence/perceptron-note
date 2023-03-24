@@ -152,8 +152,8 @@ fig <- ggplot(dat6, aes(x=x, y=y)) +
   geom_point(aes(color=tfactor), size=2) +
   guides(color=guide_legend(title=NULL)) +
   theme_minimal() +
-  geom_segment(aes(x=x1, y=y1, xend=x2, yend=y2), data = data.frame(x1=c(-2.2,0), x2 = c(2.2,0), y1 = c(0, -1.2), y2 = c(0, 2.14)), arrow = arrow(length = unit(0.2,"cm"), type = "closed")) +
-  coord_cartesian(xlim = c(-2, 2), ylim = c(-1,2))
+  geom_segment(aes(x=x1, y=y1, xend=x2, yend=y2), data = data.frame(x1=c(-2.2,0), x2 = c(2.2,0), y1 = c(0, -1.5), y2 = c(0, 2.5)), arrow = arrow(length = unit(0.2,"cm"), type = "closed")) +
+  coord_cartesian(xlim = c(-2, 2), ylim = c(-1.3,2.32))
   # theme(axis.line = element_line(arrow = arrow(type='closed', length = unit(10,'pt'))))
 fig
 ```
@@ -229,11 +229,15 @@ opsummeres sådan her:
 
 ## Hvem skal jeg stemme på?
 
-Svar på en skala fra -2 til 2 på følgende spørgsmål: $$\begin{aligned}
-x_1 &: \text{Jeg synes, at indkomstskatten skal sættes ned} \\
-x_2 &: \text{Jeg synes ikke, at danske virksomheder skal pålægges en CO2-afgift}\end{aligned}$$
-hvor 2 svarer til \"Meget enig\" og -2 svarer til \"Meget uenig\".\
-\
+Svar på en skala fra -2 til 2 på følgende spørgsmål: 
+
+$x_1$: \"Jeg synes, at indkomstskatten skal sættes ned\"
+
+$x_2$: \"Jeg synes ikke, at danske virksomheder skal pålægges en CO2-afgift\"
+
+hvor 2 svarer til \"Meget enig\" og -2 svarer til \"Meget uenig\".
+
+
 Beregn nu $o$ (for outputværdi) på denne måde $$\begin{aligned}
 o = \begin{cases}
 1 & \text{hvis } -1.5+1.2 \cdot x_1+ 1 \cdot x_2 \geq 0 \\
