@@ -1,10 +1,11 @@
 ---
-title: "Perceptroner, Adaline og Sigmoid"
+title: "Perceptroner"
 author: 'Aalborg Intelligence'
 date: ''
 format:
     html: 
-      self-contained: true
+      #husk at slette nedenstående kommentering når quarto 1.3 kommer
+      #self-contained: true
       toc: true
       toc-title: Indhold
       toc-location: left
@@ -102,7 +103,14 @@ en CO2-afgift* angivet på en skala fra -2 til 2.
 Vores beslutning vil vi nu også kvantificere vha. en variabel $t$, som
 kan antage to værdier, nemlig $-1$ og $1$. Hvis vi hører hjemme i blå
 blok, vil vi sætte $t=1$, mens vi vil sætte $t=-1$, hvis vi vil sætte
-vores krydset ved et rødt parti.
+vores krydset ved et rødt parti. Altså:
+
+$$
+\begin{aligned}
+t&=-1: &\text{Rød blok} \\
+t&=1: &\text{Blå blok} \\
+\end{aligned}
+$$
 
 Nu forestiller vi os, at vi har bedt seks personer (som godt ved, hvem
 de vil stemme på - måske er det ligefrem politikere vi har spurgt) om at
@@ -245,13 +253,13 @@ indtegner sit $(x_1, x_2)$-punkt i koordinatsystemet i @fig-punkter_kandidattest
 
 :::{#exm-Rosenblatts}
 *Lad os sige at en vælger hverken er enig eller uenig i, at indkomstskatten skal
-sættes ned. Det vil sige, at $x_1=0$. Samtidig er denne vælger enig i,
+sættes ned. Det vil sige, at $x_1=0$. Samtidig er denne vælger meget enig i,
 at danske virksomheder ikke skal pålægges en CO2-afgift. Altså er
-$x_2=1$. Vi udregner nu:
+$x_2=2$. Vi udregner nu:
 $$
--1.5+1.2 \cdot x_1+x_2=-1.5+1.2 \cdot 0+1=-0.5
+-1.5+1.2 \cdot x_1+x_2=-1.5+1.2 \cdot 0+2=0.5
 $$
-Og da denne værdi er mindre end $0$, sætter vi $o=-1$. Det vil sige, at vi vil anbefale denne vælger at stemme rød blok.*
+Og da denne værdi er større end $0$, sætter vi $o=1$. Det vil sige, at vi vil anbefale denne vælger at stemme blå blok.*
 :::
 
 Det er da smart! Og det her er faktisk lige præcis idéen bag perceptroner, som den amerikanske psykolog Frank Rosenblatt foreslog helt tilbage i $1958$. Den klassiske perceptron er defineret ved, at perceptronen kan modtage input
@@ -280,7 +288,13 @@ vægtes med $w_0$ svarende til, at vi får vores bias med), mens grafen af
 trappefunktionen i firkanten viser, at vi diskretiserer denne vægtede
 sum, sådan at outputværdien enten er $-1$ eller $1$.
 
-## Perceptron Learning Algoritmen 
+## VIDEO: Hvad er en perceptron?
+
+I denne video forklarer vi ovenstående, men med udgangspunkt i et andet eksempel.
+
+{{< video https://www.youtube.com/embed/1WTZZCx-pRY >}}
+
+# Perceptron Learning Algoritmen 
 
 Det er jo alt sammen meget fint, hvis man kender vægtene. Bum -- så kan
 man beregne den vægtede sum 
@@ -336,13 +350,14 @@ $$
 -   Opdatér alle vægtene:
 $$
 \begin{aligned}
-    w_0 \leftarrow w_0 + & error \\
-    w_1 \leftarrow w_1 + & error \cdot x_1 \\
-    w_2 \leftarrow w_2 + & error \cdot x_2 \\
+    w_0 \leftarrow w_0 + & \eta \cdot error \\
+    w_1 \leftarrow w_1 + & \eta \cdot  error \cdot x_1 \\
+    w_2 \leftarrow w_2 + & \eta \cdot  error \cdot x_2 \\
     & \vdots  \\
-    w_n \leftarrow w_n + & error \cdot x_n \\
+    w_n \leftarrow w_n + & \eta \cdot  error \cdot x_n \\
 \end{aligned}
 $$
+Her er $\eta$ (udtales "eta") et tal mellem $0$ og $1$, som kaldes for en *learning rate* (på dansk: en læringsrate). Værdien af $\eta$ afgør hvor hurtigt, vi skal opdatere vægtene. Hvis $\eta$ er tæt på $0$ opdateres vægtene langsomt, hvorimod en værdi af $\eta$ tæt på $1$ vil betyde, at vægtene opdateres hurtigt.
 
 -   Start forfra med det næste træningseksempel indtil værdien af
     vægtene ikke ændrer sig.
@@ -371,8 +386,12 @@ Lad os nu prøve perceptron learning algoritmen af. Vi starter med at
 sætte vægtene til $0.5$:
 $$
 \begin{aligned}
-w_0 = 0.5, w_1=0.5, w_2=0.5.
+w_0 = 0.5, w_1=0.5, w_2=0.5
 \end{aligned}
+$$
+og lad os også sætte vores *learning rate* til $0.5$:
+$$
+\eta = 0.5.
 $$
 Så tager vi udgangspunkt i træningseksempel $1$ og udregner:
 $$
@@ -390,7 +409,7 @@ $$
 og derfor ender vi også med ikke at opdatere nogle af vægtene, fordi vi generelt har (hvor $x_0=1$):
 $$
 \begin{aligned}
-w_i \leftarrow w_i + error \cdot x_i,
+w_i \leftarrow w_i + \eta \cdot error \cdot x_i,
 \end{aligned}
 $$
 men når $error=0$ ender vi bare med 
@@ -399,7 +418,7 @@ $$
 w_i \leftarrow w_i.
 \end{aligned}
 $$
-Altså ingen opdatering af vægtene.Det giver jo rigtig god mening, eftersom det første træningseksempel blev klassificeret korrekt.
+Altså ingen opdatering af vægtene. Det giver jo rigtig god mening, eftersom det første træningseksempel blev klassificeret korrekt.
 
 Vi går nu videre til det næste træningseksempel og udregner:
 $$
@@ -418,9 +437,9 @@ $$
 Vores vægte skal derfor opdateres til
 $$
 \begin{aligned}
-w_0 &\leftarrow 0.5 -2 = -1.5 \\
-w_1 &\leftarrow 0.5 -2 \cdot (-1) = 2.5 \\
-w_2 &\leftarrow 0.5 -2 \cdot 1= -1.5 \\
+w_0 &\leftarrow 0.5 +0.5 \cdot (-2) = -0.5 \\
+w_1 &\leftarrow 0.5 +0.5 \cdot (-2) \cdot (-1) = 1.5 \\
+w_2 &\leftarrow 0.5 +0.5 \cdot (-2) \cdot 1= -0.5 \\
 \end{aligned}
 $$
 
@@ -428,11 +447,11 @@ Så går vi videre til træningseksempel $3$ og udregner igen (men nu med
 de nye vægte!):
 $$
 \begin{aligned}
-w_0+w_1\cdot x_1 + w_2 \cdot w_2 = -1.5 +2.5 \cdot (-1) -1.5 \cdot (-1) = -2.5.
+w_0+w_1\cdot x_1 + w_2 \cdot w_2 = -0.5 +1.5 \cdot (-1) -0.5 \cdot (-1) = -1.5.
 \end{aligned}
 $$
 Da denne værdi er negativ, bliver $o=-1$. Men vores target-værdi er også
-$t=-1$ -- altså har vi igen en korrekt klassificering. Fejlen er derfor
+$t=-1$. Altså har vi igen en korrekt klassificering. Fejlen er derfor
 også: 
 $$
 \begin{aligned}
@@ -444,17 +463,16 @@ Og ingen af vægtene skal derfor opdateres.
 Sådan fortsætter man nu med træningseksempel nr. $4, 5$ og $6$, og så
 starter man forfra igen med træningseksempel nr. $1$, $2$ og så videre.
 Når man har været igennem en hel runde af de $6$ træningseksempler, hvor
-vægtene ikke har ændret sig, så stopper man! I vores lille eksempel sker
-det faktisk ret hurtigt, og man ender med følgende vægte:
+vægtene ikke har ændret sig, så stopper man! I vores lille eksempel kommer der faktisk ikke flere opdateringer af vægtene, og man ender derfor med følgende vægte:
 $$
 \begin{aligned}
-w_0 = 0.5, w_1 = 4.5, w_2=0.5
+w_0 = -0.5, w_1 = 1.5, w_2=-0.5
 \end{aligned}
 $$
 Det svarer til ligningen
 $$
 \begin{aligned}
-0.5 +4.5 \cdot x_1 + 0.5 \cdot x_2 = 0.
+-0.5 +1.5 \cdot x_1 -0.5 \cdot x_2 = 0.
 \end{aligned}
 $$
 Indtegner man linjen med denne ligning i et koordinatsystem sammen med vores
@@ -466,9 +484,9 @@ perception learning algoritmen):
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: Illustration af svaret på spørgsmål 1 ($1.$ aksen) og spørgsmål 2 ($2.$ aksen) med en markering af om man vil stemme på rød eller blok blå. Her er indtegnet to linjer, som kan separere de blå punkter fra de røde. Den sorte linje er vores eget skøn, mens den grønne stammer fra perception learning algoritmen (med startværdier $w_0=0.5$, $w_1=0.5$ og $w_2=0.5$).
+#| fig-cap: Illustration af svaret på spørgsmål 1 ($1.$ aksen) og spørgsmål 2 ($2.$ aksen) med en markering af om man vil stemme på rød eller blok blå. Her er indtegnet to linjer, som kan separere de blå punkter fra de røde. Den sorte linje er vores eget skøn, mens den grønne stammer fra perception learning algoritmen (med startværdier $w_0=0.5$, $w_1=0.5$, $w_2=0.5$ og en learning rate $\eta=0.5$).
 #| label: fig-punkter_kandidattest_graf3
-fig + geom_abline(slope=-1.2,intercept=1.5,size=1) + geom_abline(slope=-9,intercept=-1,colour='green',size=1)
+fig + geom_abline(slope=-1.2,intercept=1.5,size=1) + geom_abline(slope=3,intercept=-1,colour='green',size=1)
 ```
 Det skal bemærkes, at hvis man vælger nogle andre startværdier af
 vægtene $w_0, w_1$ og $w_2$ end $0.5$, så vil man som oftest også ende
@@ -484,29 +502,29 @@ algoritmen.
 
 :::{#exm-Rosenblatts2}
 *Vi vil nu se på, hvilken betydning de nye vægte får for vælgeren i
-@exm-Rosenblatts. Vi har stadig, at $x_1=0$ og $x_2=1$. Vi udregner nu med de nye vægte:
+@exm-Rosenblatts. Vi har stadig, at $x_1=0$ og $x_2=2$. Vi udregner nu med de nye vægte:
 $$
-0.5+4.5 \cdot x_1+0.5 \cdot x_2=0.5+4.5 \cdot 0+0.5 \cdot 1=1
+-0.5+1.5 \cdot x_1-0.5 \cdot x_2=-0.5+1.5 \cdot 0-0.5 \cdot 2=-1.5
 $$
-Nu har vi en værdi, som er større end $0$, og derfor sætter vi $o=1$. Det vil
-sige, at vores anbefaling til denne vælger nu vil være at stemme på blå
+Nu har vi en værdi, som er mindre end $0$, og derfor sætter vi $o=-1$. Det vil
+sige, at vores anbefaling til denne vælger nu vil være at stemme på rød
 blok! Det kan måske virke overraskende, men @fig-punkter_kandidattest_graf4 illustrerer hvorfor, vi ikke får det samme i de to tilfælde.*
 
 ```{r}
 #| echo: false
 #| message: false
 #| warning: false
-#| fig-cap: Illustration af svaret på spørgsmål 1 ($1.$ aksen) og spørgsmål 2 ($2.$ aksen) med en markering af om man vil stemme på rød eller blok blå. Her er indtegnet to linjer, som kan separere de blå punkter fra de røde. Den sorte linje er vores eget skøn, mens den grønne stammer fra perception learning algoritmen (med startværdier $w_0=0.5$, $w_1=0.5$ og $w_2=0.5$).Punktet med koordinatsæt $(0,1)$ er markeret med sort.
+#| fig-cap: Illustration af svaret på spørgsmål 1 ($1.$ aksen) og spørgsmål 2 ($2.$ aksen) med en markering af om man vil stemme på rød eller blok blå. Her er indtegnet to linjer, som kan separere de blå punkter fra de røde. Den sorte linje er vores eget skøn, mens den grønne stammer fra perception learning algoritmen (med startværdier $w_0=0.5$, $w_1=0.5$ og $w_2=0.5$ og en learning rate $\eta=0.5$). Punktet med koordinatsæt $(0,2)$ er markeret med sort.
 #| label: fig-punkter_kandidattest_graf4
-fig + geom_abline(slope=-1.2,intercept=1.5,size=1) + geom_abline(slope=-9,intercept=-1,colour='green',size=1)+geom_point(aes(x=0,y=1),colour="black",size=3)
+fig + geom_abline(slope=-1.2,intercept=1.5,size=1) + geom_abline(slope=3,intercept=-1,colour='green',size=1)+geom_point(aes(x=0,y=2),colour="black",size=4)
 ```
 
-*Det sorte punkt i $(0,1)$ repræsenterer vælgerens svar på de to
-spørgsmål. Her kan vi se, at punktet ligger under den sorte linje
+*Det sorte punkt i $(0,2)$ repræsenterer vælgerens svar på de to
+spørgsmål. Her kan vi se, at punktet ligger over den sorte linje
 svarende til, at vi med denne klassificering anbefaler vælgeren at
-stemme på rød blok. Samtidig ligger punktet over den grønne linje og
+stemme på blå blok. Samtidig ligger punktet til venstre for den grønne linje og
 bruges denne linje til klassificering, vil vi nu anbefale vælgeren at
-stemme på blå blok.*
+stemme på rød blok.*
 :::
 
 
@@ -557,7 +575,7 @@ på, hvad der sker efter opdateringen af vægtene. Da $error=2$ i mulighed
 $1$ har vi opdateringsreglen (hvor $x_0=1$): 
 $$
 \begin{aligned}
-w_i \leftarrow w_i + error \cdot x_i = w_i + 2 \cdot x_i.
+w_i \leftarrow w_i + \eta \cdot error \cdot x_i = w_i + \eta \cdot 2 \cdot x_i.
 \end{aligned}
 $$
 Det vil sige, at næste gang vi skal beregne vores outputværdi, så skal
@@ -565,25 +583,25 @@ vi bruge de nye vægte og udregne (vi kalder nu den nye værdi for
 $y_{new}$):
 $$
 \begin{aligned}
-y_{new} = (w_0+2) + (w_1+2 \cdot x_1) \cdot x_1 + \cdots + (w_n+2 \cdot x_n) \cdot x_n,
+y_{new} = (w_0+\eta \cdot 2) + (w_1+\eta \cdot 2 \cdot x_1) \cdot x_1 + \cdots + (w_n+\eta \cdot 2 \cdot x_n) \cdot x_n,
 \end{aligned}
 $$
 hvor vi her har indsat de opdaterede vægte. Ganger vi ind i parenteserne
 får vi
 $$
 \begin{aligned}
-y_{new} &= w_0+2 + w_1\cdot x_1 + 2\cdot x_1^2 + \cdots + w_n \cdot x_n + 2\cdot x_n^2 \\
-&=w_0 + w_1 \cdot x_1 + \cdots + w_n \cdot x_n + 2 + 2\cdot x_1^2 + \cdots 2\cdot x_n^2 \\
-&=y_{old} + 2(1 + x_1^2 + \cdots +x_n^2).
+y_{new} &= w_0+\eta \cdot 2 + w_1\cdot x_1 + \eta \cdot 2\cdot x_1^2 + \cdots + w_n \cdot x_n + \eta \cdot 2\cdot x_n^2 \\
+&=w_0 + w_1 \cdot x_1 + \cdots + w_n \cdot x_n + \eta \cdot 2 + \eta \cdot 2\cdot x_1^2 + \cdots +\eta \cdot 2\cdot x_n^2 \\
+&=y_{old} + \eta \cdot 2 \cdot(1 + x_1^2 + \cdots +x_n^2).
 \end{aligned}
 $$
-Men da
+Men da $\eta >0$ må
 $$
 \begin{aligned}
-2(1 + x_1^2 + \cdots +x_n^2) >0,
+\eta \cdot 2 \cdot (1 + x_1^2 + \cdots +x_n^2) >0,
 \end{aligned}
 $$
-så må
+og derfor er
 $$
 \begin{aligned}
 y_{new} > y_{old}.
@@ -602,12 +620,11 @@ $$
 w_0 + w_1 \cdot x_1 + \cdots + w_n \cdot x_n \geq 0,
 \end{aligned}
 $$
-hvor
-vi egentlig gerne ville have haft, at denne værdi havde været negativ. I
+hvor vi egentlig gerne ville have haft, at denne værdi havde været negativ. I
 mulighed $2$ er fejlen $error=-2$ og opdateringsreglen bliver derfor
 $$
 \begin{aligned}
-w_i \leftarrow w_i + error \cdot x_i = w_i -2 \cdot x_i.
+w_i \leftarrow w_i + \eta \cdot error \cdot x_i = w_i -\eta \cdot 2 \cdot x_i.
 \end{aligned}
 $$
 Med et helt tilsvarende argument som ovenfor, kan man nu vise, at
@@ -635,6 +652,13 @@ adskilles af en ret linje -- så går perceptron learning algoritmen i
 selvsving! Den kommer simpelthen aldrig frem til nogle værdier af
 vægtene, som bare tilnærmelsesvist kan bruges til at adskille punkterne.
 Man siger, at algoritmen ikke konvergerer.
+
+## VIDEO: Perceptron Learning Algoritmen
+
+I denne video forklarer vi perceptron learning algoritmen.
+
+{{< video https://www.youtube.com/embed/xCeSZgdU3jc >}}
+
 
 # Det kan gøres smartere med "Adaline" 
 
@@ -820,6 +844,12 @@ tabsfunktionen give en stor værdi. Se det er faktisk hele humlen. Vi
 skal finde de værdier af vægtene $w_0, w_1, \dots, w_n$, som minimerer
 tabsfunktionen!
 
+## VIDEO: Perceptron Learning versus Adaline
+
+I denne video forklarer vi idéen bag Adaline og indfører tabsfunktionen.
+
+{{< video https://www.youtube.com/embed/QF3WRIe5v6U >}}
+
 ## Gradientnedstigning 
 
 For at gøre det bruges en metode, som kaldes for
@@ -884,7 +914,7 @@ w_1 \leftarrow & w_1 - \eta \cdot \frac{\partial E }{\partial w_1} \\
 w_n \leftarrow & w_n - \eta \cdot \frac{\partial E }{\partial w_n} \\
 \end{aligned}
 $$
-Her er $\eta$ (udtales "eta") en lille værdi (f.eks. $0.05$), som
+Her er $\eta$ igen en *learning rate* f.eks. $0.05$, som
 sørger for, at vi hele tiden bare tager et lille skridt i den negative
 gradients retning. Man vælger værdien af $\eta$ lille for ikke at lave
 alt for store justeringer af vægtene ad gangen. Det svarer grafisk til,
@@ -894,8 +924,7 @@ risikerer vi helt, at komme til at "træde forbi" det minimum, som vi
 gerne vil lande i. Omvendt vil alt for små skridt føre til, at vi alt
 for langsomt nærmer os minimum. Så værdien af $\eta$ angiver altså, hvor
 meget vi er villige til at justere vægtene og dermed hvor hurtige eller
-hvor langsomme, vi bevæger os ned mod minimum. Af den grund kaldes
-$\eta$ også for en *learning rate* - fordi den afgører, hvor hurtigt vi
+hvor langsomme, vi bevæger os ned mod minimum. Af den grund giver det god mening, at $\eta$ kaldes for en *learning rate* - fordi den afgører, hvor hurtigt vi
 lærer af vores træningsdata.
 
 Nu mangler vi bare at få bestemt de partielle afledede. Ved at bruge
@@ -1056,6 +1085,13 @@ stedet for at gemme alle de mange træningsdata kan man bare opdatere
 vægtene, hver gang man får et nyt træningseksempel til rådighed og så
 eventuelt slette træningseksemplet igen, når vægtene er blevet
 opdateret. Det er både hurtigere og mere pladsbesparende. 
+
+## VIDEO: Adaline
+
+I denne video forklarer vi, hvad gradientnedstigning går ud på, og hvordan gradientnedstigning bruges til at opdatere vægtene i Adaline. 
+
+{{< video https://www.youtube.com/embed/4YMzpNP4wnA >}}
+
 
 # Videre læsning 
 
