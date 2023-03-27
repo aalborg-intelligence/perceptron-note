@@ -1097,7 +1097,7 @@ I denne video forklarer vi, hvad gradientnedstigning går ud på, og hvordan gra
 {{< video https://www.youtube.com/embed/4YMzpNP4wnA >}}
 
 # Noten som pdf
-[Perceptron note.](./perceptron-note.pdf)
+[Perceptron note](./perceptron-note.pdf).
 
 # Videre læsning 
 
