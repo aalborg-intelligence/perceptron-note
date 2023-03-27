@@ -13,6 +13,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+        
+      - name: Install ICU needed by stringi package
+        run: |
+          sudo apt-get -y install libicu66
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
