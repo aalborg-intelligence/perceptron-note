@@ -32,7 +32,8 @@ jobs:
           install.packages("shiny", dependencies = TRUE)
           install.packages("spaa", dependencies = TRUE)
           install.packages("class", dependencies = TRUE)
-          install.packages('stringi')
+          install.packages('stringi', dependencies = TRUE)
+          install.packages('pander', dependencies = TRUE)
           remotes::install_github("aalborg-intelligence/aai")
         shell: Rscript {0}
         env:
