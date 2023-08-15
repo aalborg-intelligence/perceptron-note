@@ -4,8 +4,7 @@ author: 'Aalborg Intelligence'
 date: ''
 format:
     html: 
-      #husk at slette nedenstående kommentering når quarto 1.3 kommer
-      #self-contained: true
+      self-contained: true
       toc: true
       toc-title: Indhold
       toc-location: left
